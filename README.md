@@ -16,3 +16,13 @@ npm install --save-dev @babel/core @babel/preset-env del eslint gulp gulp-babel 
 - .gitignore
 - gulpfile.js
 
+## Package Scripts
+
+``` json
+{
+	"gulp": "gulp",
+	"gulp-watch": "gulp watch",
+	"gulp-serve": "gulp serve"
+}
+```
+
