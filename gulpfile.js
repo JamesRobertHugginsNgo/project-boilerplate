@@ -7,6 +7,7 @@ const connect = require('gulp-connect');
 const eslint = require('gulp-eslint');
 const rename = require('gulp-rename');
 const sass = require('gulp-sass');
+const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -24,10 +25,12 @@ function buildJs() {
 		.pipe(eslint.format())
 		.pipe(babel())
 		.pipe(gulp.dest('dist'))
+		.pipe(sourcemaps.init())
 		.pipe(uglify())
 		.pipe(rename((path) => {
 			path.basename += '.min';
 		}))
+		.pipe(sourcemaps.write())
 		.pipe(gulp.dest('dist'));
 }
 function watchJs() {
@@ -43,10 +46,12 @@ const buildStyleCssSrc = ['src/**/*.css'];
 function buildStyleCss() {
 	return gulp.src(buildStyleCssSrc, { since: gulp.lastRun(buildStyleCss) })
 		.pipe(gulp.dest('dist'))
+		.pipe(sourcemaps.init())
 		.pipe(cleanCss())
 		.pipe(rename((path) => {
 			path.basename += '.min';
 		}))
+		.pipe(sourcemaps.write())
 		.pipe(gulp.dest('dist'));
 }
 function watchStyleCss() {
@@ -58,10 +63,12 @@ function buildStyleScss() {
 	return gulp.src(buildStyleScssSrc, { since: gulp.lastRun(buildStyleScss) })
 		.pipe(sass())
 		.pipe(gulp.dest('dist'))
+		.pipe(sourcemaps.init())
 		.pipe(cleanCss())
 		.pipe(rename((path) => {
 			path.basename += '.min';
 		}))
+		.pipe(sourcemaps.write())
 		.pipe(gulp.dest('dist'));
 }
 function watchStyleScss() {
