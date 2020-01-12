@@ -3,7 +3,7 @@
 ## Dependencies
 
 ``` console
-npm install --save-dev @babel/core @babel/preset-env del eslint gulp gulp-babel gulp-connect gulp-eslint gulp-sass
+npm install --save-dev @babel/core @babel/preset-env del eslint gulp gulp-babel gulp-clean-css gulp-connect gulp-eslint gulp-sass gulp-sourcemaps gulp-uglify
 ```
 
 ## Files to Copy
