@@ -2,6 +2,7 @@ const del = require('del');
 const gulp = require('gulp');
 
 const babel = require('gulp-babel');
+const cleanCss = require('gulp-clean-css');
 const connect = require('gulp-connect');
 const eslint = require('gulp-eslint');
 const rename = require('gulp-rename');
@@ -41,6 +42,11 @@ const watchScripts = gulp.parallel(watchJs);
 const buildStyleCssSrc = ['src/**/*.css'];
 function buildStyleCss() {
 	return gulp.src(buildStyleCssSrc, { since: gulp.lastRun(buildStyleCss) })
+		.pipe(gulp.dest('dist'))
+		.pipe(cleanCss())
+		.pipe(rename((path) => {
+			path.basename += '.min';
+		}))
 		.pipe(gulp.dest('dist'));
 }
 function watchStyleCss() {
@@ -51,6 +57,11 @@ const buildStyleScssSrc = ['src/**/*.scss'];
 function buildStyleScss() {
 	return gulp.src(buildStyleScssSrc, { since: gulp.lastRun(buildStyleScss) })
 		.pipe(sass())
+		.pipe(gulp.dest('dist'))
+		.pipe(cleanCss())
+		.pipe(rename((path) => {
+			path.basename += '.min';
+		}))
 		.pipe(gulp.dest('dist'));
 }
 function watchStyleScss() {
