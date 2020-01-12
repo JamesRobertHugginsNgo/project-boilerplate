@@ -4,7 +4,9 @@ const gulp = require('gulp');
 const babel = require('gulp-babel');
 const connect = require('gulp-connect');
 const eslint = require('gulp-eslint');
+const rename = require('gulp-rename');
 const sass = require('gulp-sass');
+const uglify = require('gulp-uglify');
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -20,6 +22,11 @@ function buildJs() {
 		.pipe(eslint())
 		.pipe(eslint.format())
 		.pipe(babel())
+		.pipe(gulp.dest('dist'))
+		.pipe(uglify())
+		.pipe(rename((path) => {
+			path.basename += '.min';
+		}))
 		.pipe(gulp.dest('dist'));
 }
 function watchJs() {
