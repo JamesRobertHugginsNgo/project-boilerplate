@@ -46,7 +46,17 @@ function watchJs() {
 	gulp.watch(buildJsSrc, (gulp.series(buildJs, buildBundle)));
 }
 
-const buildScripts = gulp.parallel(gulp.series(buildJs, buildBundle));
+// const buildVueSrc = ['src/**/*.vue'];
+// function buildVue() {
+// 	return gulp.src(buildVueSrc, { since: gulp.lastRun(buildVue) })
+// 		.pipe(vue())
+// 		.pipe(gulp.dest('dist'));
+// }
+// function watchVue() {
+// 	gulp.watch(buildVueSrc, (gulp.series(buildVue, buildBundle)));
+// }
+
+const buildScripts = gulp.series(gulp.parallel(buildJs), buildBundle);
 const watchScripts = gulp.parallel(watchJs);
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -95,7 +105,17 @@ const watchDocuments = gulp.parallel(watchHtml);
 
 ////////////////////////////////////////////////////////////////////////////////
 
-exports.default = gulp.series(cleanup, gulp.parallel(buildScripts, buildStyles, buildDocuments));
+const addVueJsSrc = ['./node_modules/vue/dist/vue.esm.browser.min.js'];
+function addVueJs() {
+	return gulp.src(addVueJsSrc, { since: gulp.lastRun(addVueJs) })
+		.pipe(gulp.dest('dist/vendors/vue'));
+}
+
+const addDependencies = gulp.parallel(addVueJs);
+
+////////////////////////////////////////////////////////////////////////////////
+
+exports.default = gulp.series(cleanup, gulp.parallel(buildScripts, buildStyles, buildDocuments, addDependencies));
 
 const watch = gulp.parallel(watchScripts, watchStyles, watchDocuments);
 exports.watch = gulp.series(exports.default, watch);
