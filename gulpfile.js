@@ -17,6 +17,21 @@ function cleanup() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+function buildBundle() {
+	const webpackConfig = require('./webpack.config.js');
+	return new Promise((resolve, reject) => {
+		webpack(webpackConfig, (err, stats) => {
+			if (err) {
+				return reject(err);
+			}
+			if (stats.hasErrors()) {
+				return reject(new Error(stats.compilation.errors.join('\n')));
+			}
+			resolve();
+		});
+	});
+}
+
 const buildJsSrc = ['src/**/*.js', 'src/**/*.mjs'];
 function buildJs() {
 	return gulp.src(buildJsSrc, { since: gulp.lastRun(buildJs) })
@@ -28,10 +43,10 @@ function buildJs() {
 		.pipe(gulp.dest('dist'));
 }
 function watchJs() {
-	gulp.watch(buildJsSrc, buildJs);
+	gulp.watch(buildJsSrc, (gulp.series(buildJs, buildBundle)));
 }
 
-const buildScripts = gulp.parallel(buildJs);
+const buildScripts = gulp.parallel(gulp.series(buildJs, buildBundle));
 const watchScripts = gulp.parallel(watchJs);
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -80,24 +95,7 @@ const watchDocuments = gulp.parallel(watchHtml);
 
 ////////////////////////////////////////////////////////////////////////////////
 
-function buildBundle() {
-	const webpackConfig = require('./webpack.config.js');
-	return new Promise((resolve, reject) => {
-		webpack(webpackConfig, (err, stats) => {
-			if (err) {
-				return reject(err);
-			}
-			if (stats.hasErrors()) {
-				return reject(new Error(stats.compilation.errors.join('\n')));
-			}
-			resolve();
-		});
-	});
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-exports.default = gulp.series(cleanup, gulp.parallel(buildScripts, buildStyles, buildDocuments), buildBundle);
+exports.default = gulp.series(cleanup, gulp.parallel(buildScripts, buildStyles, buildDocuments));
 
 const watch = gulp.parallel(watchScripts, watchStyles, watchDocuments);
 exports.watch = gulp.series(exports.default, watch);
