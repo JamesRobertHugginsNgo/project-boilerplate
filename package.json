@@ -1,6 +1,6 @@
 {
-  "name": "eventful",
-  "version": "1.1.2",
+  "name": "project-boilerplate",
+  "version": "1.1.4",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,15 +11,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JamesRobertHugginsNgo/eventful.git"
+    "url": "git+https://github.com/JamesRobertHugginsNgo/project-boilerplate.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/JamesRobertHugginsNgo/eventful/issues"
+    "url": "https://github.com/JamesRobertHugginsNgo/project-boilerplate/issues"
   },
-  "homepage": "https://github.com/JamesRobertHugginsNgo/eventful#readme",
+  "homepage": "https://github.com/JamesRobertHugginsNgo/project-boilerplate#readme",
   "devDependencies": {
     "@babel/core": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
