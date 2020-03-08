@@ -1,0 +1,1 @@
+{"version":3,"sources":["foo.mjs"],"names":["foobar","console","log"],"mappings":"AAAA,KAAMA,CAAAA,MAAM,CAAG,IAAM,CACpBC,OAAO,CAACC,GAAR,CAAY,SAAZ,CACA,CAFD,CAIA,OAASF,MAAT","sourcesContent":["const foobar = () => {\n\tconsole.log('FOO BAR');\n};\n\nexport { foobar };\n"],"file":"foo.mjs"}

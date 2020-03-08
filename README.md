@@ -3,7 +3,7 @@
 ## Dependencies
 
 ``` console
-npm install --save-dev @babel/core @babel/preset-env del eslint gulp gulp-babel gulp-clean-css gulp-connect gulp-eslint gulp-rename gulp-sass gulp-sourcemaps gulp-uglify
+npm install --save-dev @babel/core @babel/preset-env babel-loader del eslint gulp gulp-babel gulp-babel-minify gulp-clean-css gulp-connect gulp-eslint gulp-sass gulp-sourcemaps webpack
 ```
 
 ## Files to Copy
@@ -15,6 +15,7 @@ npm install --save-dev @babel/core @babel/preset-env del eslint gulp gulp-babel 
 - .eslintrc.json
 - .gitignore
 - gulpfile.js
+- webpack.config.json
 
 ## Package Scripts
 

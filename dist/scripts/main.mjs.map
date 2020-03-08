@@ -1,0 +1,1 @@
+{"version":3,"sources":["main.mjs"],"names":["foobar"],"mappings":"AAAA,OAASA,MAAT,KAAuB,WAAvB,CAEAA,MAAM,E","sourcesContent":["import { foobar } from './foo.mjs';\n\nfoobar();\n"],"file":"main.mjs"}

@@ -2,4 +2,4 @@ const foobar = () => {
 	console.log('FOO BAR');
 };
 
-foobar();
+export { foobar };

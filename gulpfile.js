@@ -1,14 +1,13 @@
 const del = require('del');
 const gulp = require('gulp');
 
-const babel = require('gulp-babel');
 const cleanCss = require('gulp-clean-css');
 const connect = require('gulp-connect');
 const eslint = require('gulp-eslint');
-const rename = require('gulp-rename');
+const minify = require('gulp-babel-minify');
 const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
-const uglify = require('gulp-uglify');
+const webpack = require('webpack');
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -18,19 +17,14 @@ function cleanup() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-const buildJsSrc = ['src/**/*.js'];
+const buildJsSrc = ['src/**/*.js', 'src/**/*.mjs'];
 function buildJs() {
 	return gulp.src(buildJsSrc, { since: gulp.lastRun(buildJs) })
 		.pipe(eslint())
 		.pipe(eslint.format())
-		.pipe(babel())
-		.pipe(gulp.dest('dist'))
 		.pipe(sourcemaps.init())
-		.pipe(uglify())
-		.pipe(rename((path) => {
-			path.basename += '.min';
-		}))
-		.pipe(sourcemaps.write())
+		.pipe(minify())
+		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest('dist'));
 }
 function watchJs() {
@@ -45,13 +39,9 @@ const watchScripts = gulp.parallel(watchJs);
 const buildStyleCssSrc = ['src/**/*.css'];
 function buildStyleCss() {
 	return gulp.src(buildStyleCssSrc, { since: gulp.lastRun(buildStyleCss) })
-		.pipe(gulp.dest('dist'))
 		.pipe(sourcemaps.init())
 		.pipe(cleanCss())
-		.pipe(rename((path) => {
-			path.basename += '.min';
-		}))
-		.pipe(sourcemaps.write())
+		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest('dist'));
 }
 function watchStyleCss() {
@@ -62,13 +52,9 @@ const buildStyleScssSrc = ['src/**/*.scss'];
 function buildStyleScss() {
 	return gulp.src(buildStyleScssSrc, { since: gulp.lastRun(buildStyleScss) })
 		.pipe(sass())
-		.pipe(gulp.dest('dist'))
 		.pipe(sourcemaps.init())
 		.pipe(cleanCss())
-		.pipe(rename((path) => {
-			path.basename += '.min';
-		}))
-		.pipe(sourcemaps.write())
+		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest('dist'));
 }
 function watchStyleScss() {
@@ -94,7 +80,24 @@ const watchDocuments = gulp.parallel(watchHtml);
 
 ////////////////////////////////////////////////////////////////////////////////
 
-exports.default = gulp.series(cleanup, gulp.parallel(buildScripts, buildStyles, buildDocuments));
+function buildBundle() {
+	const webpackConfig = require('./webpack.config.js');
+	return new Promise((resolve, reject) => {
+		webpack(webpackConfig, (err, stats) => {
+			if (err) {
+				return reject(err);
+			}
+			if (stats.hasErrors()) {
+				return reject(new Error(stats.compilation.errors.join('\n')));
+			}
+			resolve();
+		});
+	});
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+exports.default = gulp.series(cleanup, gulp.parallel(buildScripts, buildStyles, buildDocuments), buildBundle);
 
 const watch = gulp.parallel(watchScripts, watchStyles, watchDocuments);
 exports.watch = gulp.series(exports.default, watch);

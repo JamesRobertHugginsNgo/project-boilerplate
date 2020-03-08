@@ -4,5 +4,8 @@
 		"commonjs": false,
 		"es6": true,
 		"node": false
+	},
+	"parserOptions": {
+		"sourceType": "module"
 	}
 }
